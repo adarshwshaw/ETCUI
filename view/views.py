@@ -9,7 +9,11 @@ from model.models import Transactions,Incomes
 def dashboard():
     arg={}
     arg['expense'],arg['month'] = tc.getTotalExpense()
+    if arg['expense'] == None:
+        arg['expense']=0
     arg['income'] = ic.getIncome()
+    if arg['income'] == None:
+        arg['income']=0
     arg['remain']=arg['income']-arg['expense']
     piechart = tc.getExpensePerCategore()
     arg['pie_x_val']=[]
@@ -17,6 +21,12 @@ def dashboard():
     for i in piechart:
         arg['pie_x_val'].append(i['categore'])
         arg['pie_y_val'].append(i['amt'])
+    barchar = tc.getLast6monthExpense()
+    arg['bar_x_val']=[]
+    arg['bar_y_val']=[]
+    for i in barchar:
+        arg['bar_x_val'].append(i['month'])
+        arg['bar_y_val'].append(i['amt'])
     return render_template("Summary.html",**arg)
 
 @app.route("/Income",methods=['GET','POST'])

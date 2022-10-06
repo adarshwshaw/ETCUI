@@ -58,10 +58,18 @@ def deleteTransaction(id):
     sess.delete(t)
     sess.commit()
 
+def getLast6monthExpense():
+    with Engine.connect() as con:
+        result = con.execute(f"select STRFTIME('%m',created_dt) as month,sum(amt) as amt from {Transactions.__tablename__} group by STRFTIME('%m',created_dt) order by created_dt desc").fetchall()[:6]
+    result = util_row_to_dict(result)
+    for i in range(len(result)):
+        result[i]['month'] = months[int(result[i]['month'])-1]
+    return result
 
 
 if __name__=="__main__":
     # t=Transactions(categore="c2",desc="misc",amt=30)
     # addTransaction(t)
     # print(getExpensePerCategore())
-    updateTransaction(1,"amt=110")
+    # updateTransaction(1,"amt=110")
+    print(getLast6monthExpense())

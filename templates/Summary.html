@@ -83,8 +83,8 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     </script>
     <script>
-        var xValues = [50,60,70,80,90,100,110,120,130,140,150];
-        var yValues = [7,8,8,9,9,9,10,11,14,14,15];
+        var xValues = {{bar_x_val|safe}};
+        var yValues = {{bar_y_val|safe}};
 
         new Chart("myChart", {
         type: "bar",
@@ -100,9 +100,6 @@
         },
         options: {
             legend: {display: true},
-            scales: {
-            yAxes: [{ticks: {min: 6, max:16}}],
-            }
         }
         });
         var xVal = {{pie_x_val|safe}}
