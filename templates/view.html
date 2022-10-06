@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ETCUI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">ETCUI</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link active" href="#">Details</a>
+                <a class="nav-link" href="/Income">incomes</a>
+                <a class="nav-link disabled">Disabled</a>
+              </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h3>Details</h3>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Add Expense</h5>
+              <form action = "{{ request.path }}" method="post">
+                <div class="form-group">
+                  <input type="hidden" name="type" value="insert">
+                  <label for="categore">Categore</label>
+                  <select type="custom-select" class="form-control" id="categore" name="categore">
+                    <option selected>choose</option>
+                    {% for c in categore %}
+                    <option value="{{c}}">{{c}}</option>
+                    {% endfor %}
+                  </select>
+                  <label for="desc">Description</label>
+                  <input type="text" class="form-control" id="desc" name="desc">
+                  <label for="amount">Amount</label>
+                  <input type="number" class="form-control" id="amount" name="amount">
+                </div>
+                <p></p>
+                <button type="submit" class="btn btn-primary">Add</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Update Expense</h5>
+              <form action = "{{ request.path }}" method="post">
+                <div class="form-group">
+                  <input type="hidden" name="type" value="update">
+                  <label for="id">ID</label>
+                  <input type="number" class="form-control" id="id" name="id">
+                  <label for="setExpr">Set Expression</label>
+                  <input type="text" class="form-control" id="setExpr" name="setExpr">
+                </div>
+                <p></p>
+                <button type="submit" class="btn btn-primary">Update</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Data</h5>
+                <input style="max-width:250px" type="month" class="form-control" id="dateid" name="month">
+                <table class="table table-striped" style="overflow-y:auto;">
+                  <thead>
+                    <tr>
+                      <th scope="col">id</th>
+                      <th scope="col">Tansaction Categore</th>
+                      <th scope="col">Transaction Description</th>
+                      <th scope="col">Transaction Amount</th>
+                      <th scope="col">Created Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for t in transactions %}
+                    <tr>
+                        <td>{{t.id}}</td>
+                        <td>{{t.categore}}</td>
+                        <td>{{t.desc}}</td>
+                        <td>{{t.amt}}</td>
+                        <td>{{t.created_dt}}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script>
+      var input = document.getElementById("dateid");
+      input.addEventListener("change",(e) => {
+        var month = input.value.split("-")[1]
+        window.location.href = "/Expense/"+month
+      })
+    </script>
+  </body>
+</html>
+<!--<html>-->
+<!--<head>-->
+<!--    <title>Summary</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h2>Group by</h2>-->
+<!--<table>-->
+<!--    <thead>-->
+<!--    <th>Tansaction Categore</th>-->
+<!--    <th>Transaction Amount</th>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--        {% for t in transactions %}-->
+<!--         <tr>-->
+<!--             <td>{{t.transaction_categore}}</td>-->
+<!--             <td>{{t.amt}}</td>-->
+<!--         </tr>-->
+<!--        {% endfor %}-->
+<!--    </tbody>-->
+<!--</table>-->
+<!--<a href="/"> home </a>-->
+<!--</body>-->
+<!--</html>-->

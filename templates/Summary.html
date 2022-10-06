@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ETCUI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md" style="background-color: #e3f2fd;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">ETCUI</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+                <a class="nav-link" href="/Expense">Details</a>
+                <a class="nav-link" href="/Income">incomes</a>
+                <a class="nav-link disabled">Disabled</a>
+              </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h3>Expense Analysis</h2>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Total Income</h5>
+                  <p class="card-text"> <b> &#x20B9 {{income}} </b></p>
+                  <p style="font-size:80%"> <b>Month: {{month}}</b></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Total Expense</h5>
+                  <p class="card-text"> <b> &#x20B9 {{expense}} </b></p>
+                  <p style="font-size:80%"> <b>Month: {{month}}</b></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Remaining Cash</h5>
+                    <p class="card-text"> <b> &#x20B9 {{remain}} </b></p>
+                    <p style="font-size:80%"> <b>Month: {{month}}</b></p>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Special title treatment</h5>
+                  <canvas id="myChart"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Special title treatment</h5>
+                  <canvas id="myChart1"></canvas>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
+    <script>
+        var xValues = [50,60,70,80,90,100,110,120,130,140,150];
+        var yValues = [7,8,8,9,9,9,10,11,14,14,15];
+
+        new Chart("myChart", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+            fill: false,
+            lineTension: 0,
+            backgroundColor: "rgba(0,0,255,1.0)",
+            borderColor: "rgba(0,0,255,0.1)",
+            data: yValues
+            }]
+        },
+        options: {
+            legend: {display: true},
+            scales: {
+            yAxes: [{ticks: {min: 6, max:16}}],
+            }
+        }
+        });
+        var xVal = {{pie_x_val|safe}}
+        var yVal = {{pie_y_val|safe}};
+        var barColors = [
+        "#b91d47",
+        "#00aba9",
+        "#2b5797",
+        "#e8c3b9",
+        "#1e7145"
+        ];
+
+        new Chart("myChart1", {
+        type: "pie",
+        data: {
+            labels: xVal,
+            datasets: [{
+            backgroundColor: barColors,
+            data: yVal
+            }]
+        },
+        options: {
+            title: {
+            display: true,
+            text: "World Wide Wine Production 2018"
+            }
+        }
+        });
+    </script>
+  </body>
+</html>
+<!--<html>-->
+<!--<head>-->
+<!--    <title>Summary</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h2>Transaction</h2>-->
+<!--<table>-->
+<!--    <thead>-->
+<!--    <th>Date</th>-->
+<!--    <th>Tansaction Categore</th>-->
+<!--    <th>Transaction Description</th>-->
+<!--    <th>Transaction Amount</th>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--        {% for t in transactions %}-->
+<!--         <tr>-->
+<!--             <td>{{t.transaction_dt}}</td>-->
+<!--             <td>{{t.transaction_categore}}</td>-->
+<!--             <td>{{t.transaction_desc}}</td>-->
+<!--             <td>{{t.transaction_amt}}</td>-->
+<!--         </tr>-->
+<!--        {% endfor %}-->
+<!--    </tbody>-->
+<!--</table>-->
+<!--<a href="/insert"> Insert </a>-->
+<!--<a href="/view"> view </a>-->
+<!--</body>-->
+<!--</html>-->
