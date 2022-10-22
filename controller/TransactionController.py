@@ -21,8 +21,9 @@ def getTotalExpense():
     :return: get total expense for the month
     '''
     current_month = datetime.now().month
+    current_year = datetime.now().year
     with Engine.connect() as con:
-        result = con.execute(f"select sum(amt) from {Transactions.__tablename__} where STRFTIME('%m',created_dt) == '{current_month}'").scalar()
+        result = con.execute(f"select sum(amt) from {Transactions.__tablename__} where STRFTIME('%Y-%m',created_dt) == '{current_year}-{current_month}'").scalar()
     return result,months[current_month-1]
 
 #get
@@ -31,21 +32,25 @@ def getExpensePerCategore():
     :return: get sum of expense per categore
     '''
     current_month = datetime.now().month
+    current_year = datetime.now().year
+
     with Engine.connect() as con:
-        result = con.execute(f"select categore,sum(amt) as amt from {Transactions.__tablename__} where STRFTIME('%m',created_dt) == '{current_month}' group by categore").fetchall()
+        result = con.execute(f"select categore,sum(amt) as amt from {Transactions.__tablename__} where STRFTIME('%Y-%m',created_dt) == '{current_year}-{current_month}' group by categore").fetchall()
     return util_row_to_dict(result)
 
 #get
 def getExpense():
     current_month = datetime.now().month
+    current_year = datetime.now().year
+
     # with Engine.connect() as con:
     #     result = con.execute(f"select * from {Transactions.__tablename__} where STRFTIME('%m',created_dt) == '{current_month}' order by created_dt desc").fetchall()
     # return result
-    return getExpenseOfMonth(current_month)
+    return getExpenseOfMonth(current_year,current_month)
 
-def getExpenseOfMonth(month):
+def getExpenseOfMonth(year,month):
     with Engine.connect() as con:
-        result = con.execute(f"select * from {Transactions.__tablename__} where STRFTIME('%m',created_dt) == '{month}' order by created_dt desc").fetchall()
+        result = con.execute(f"select * from {Transactions.__tablename__} where STRFTIME('%Y-%m',created_dt) == '{year}-{month}' order by created_dt desc").fetchall()
     return result
 #put
 def updateTransaction(id,setExpr):
@@ -60,10 +65,10 @@ def deleteTransaction(id):
 
 def getLast6monthExpense():
     with Engine.connect() as con:
-        result = con.execute(f"select STRFTIME('%m',created_dt) as month,sum(amt) as amt from {Transactions.__tablename__} group by STRFTIME('%m',created_dt) order by created_dt desc").fetchall()[:6]
+        result = con.execute(f"select STRFTIME('%Y-%m',created_dt) as month,sum(amt) as amt from {Transactions.__tablename__} group by STRFTIME('%Y-%m',created_dt) order by created_dt desc").fetchall()[:6]
     result = util_row_to_dict(result)
     for i in range(len(result)):
-        result[i]['month'] = months[int(result[i]['month'])-1]
+        result[i]['month'] = months[int(result[i]['month'].split('-')[-1])-1] + "' "+ result[i]['month'].split('-')[0][-2:]
     return result
 
 
