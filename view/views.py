@@ -38,9 +38,9 @@ def income():
     income = ic.getAllIncome()
     return render_template("incomes.html",income=income)
 
-@app.route("/Expense/<month>",methods=['GET','POST'])
+@app.route("/Expense/<year>/<month>",methods=['GET','POST'])
 @app.route("/Expense",methods=['GET','POST'])
-def expense(month=None):
+def expense(year=None,month=None):
     if request.method=='POST':
         if request.form['type']== 'insert':
             t=Transactions(categore=request.form['categore'],desc=request.form['desc'],amt=request.form['amount'])
@@ -51,14 +51,14 @@ def expense(month=None):
             else:
                 tc.updateTransaction(request.form['id'],request.form['setExpr'])
         elif request.form['type']=='filter':
-            month=request.form['month'].split('-')[-1]
-            return redirect(f"/Expense/{month}")
+            month=request.form['month']
+            return redirect(f"/Expense/{month[0]}/{month[1]}")
         return redirect("/Expense")
     else:
         if month==None:
             result = tc.getExpense()
         else:
-            result = tc.getExpenseOfMonth(month)
+            result = tc.getExpenseOfMonth(year,month)
         return render_template("view.html",transactions=result, categore = Transactions.Categories)
 
 

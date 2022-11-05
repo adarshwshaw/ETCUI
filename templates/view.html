@@ -111,8 +111,8 @@
     <script>
       var input = document.getElementById("dateid");
       input.addEventListener("change",(e) => {
-        var month = input.value.split("-")[1]
-        window.location.href = "/Expense/"+month
+        var month = input.value.split("-")
+        window.location.href = "/Expense/"+month[0]+"/"+month[1]
       })
     </script>
   </body>
