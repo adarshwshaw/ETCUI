@@ -8,7 +8,7 @@ Base = declarative_base()
 class Transactions(Base):
     __tablename__ = 'Transactions'
 
-    Categories = ['c1','c2','c3','c4']
+    Categories = ['	Misc','Resturant','paan','Groceries','food delivery','Entertainment','Rent']
     id = db.Column(db.Integer(),primary_key=True,autoincrement=True)
     categore = db.Column(db.String(16),nullable=False,default="Unidentified")
     desc = db.Column(db.String(32),nullable=False)
